@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController controller;
-
+    Rigidbody rb;
     public float speed = 12f;
-
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
 
         float x = Input.GetAxis("Horizontal");
@@ -17,7 +19,8 @@ public class PlayerMovement : MonoBehaviour
 
 
         Vector3 move = transform.right * x + transform.forward * z;
-
-        controller.Move(move * speed * Time.deltaTime);
+        Vector3 actualmove = move * speed * Time.deltaTime;
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = new Vector3(actualmove.x, rb.velocity.y, actualmove.z);
     }
 }
